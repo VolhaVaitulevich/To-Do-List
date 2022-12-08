@@ -1,1 +1,104 @@
 // Your styles
+$basic_color: #5C9DFE;
+$text_color: #111111;
+$font-family_1: Roboto;
+$basic_background_color: #E8EEFF;
+$disabled_checkbox_color: #9CA59D;
+
+* {
+	box-sizing: border-box;
+	font-family: $font-family_1;
+	font-size: 24px;
+}
+.content {
+	position: relative;
+	height: 100vh;
+	margin: 1% calc(50vw - 325px);
+	padding: 40px;
+	background-color: $basic_background_color;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	border-radius: 20px;
+}
+h1 {
+	font-size: 36px;
+	margin-top: 0;
+	color: $basic_color;
+	font-weight: bold;
+}
+.tasks {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	color: $text_color;
+	font-weight: lighter;
+}
+.check__input {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	position: absolute;
+	&:checked {
+		+ {
+			.check__box {
+				background-color: $basic_color;
+				background-image: url("../src/assets/images/check.svg");
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+		}
+		&:disabled {
+			+ {
+				.check__box {
+					background-color: $disabled_checkbox_color;
+					background-image: url("../src/assets/images/check.svg");
+					background-repeat: no-repeat;
+					background-position: center;
+				}
+			}
+		}
+	}
+	&:focus {
+		+ {
+			.check__box {
+				box-shadow: 0 0 0 2px #5C9DFE, 0 0 0 4px #015ADF;
+			}
+		}
+	}
+	&:disabled {
+		+ {
+			.check__box {
+				box-shadow: 0 0 0 2px #9CA59D;
+			}
+		}
+	}
+}
+.check__box {
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	box-shadow: 0 0 0 2px #5C9DFE;
+	margin-left: -30px;
+	border-radius: 6px;
+	background-color: $basic_background_color;
+}
+.check {
+	padding-left: 30px;
+}
+.add-task {
+	position: sticky;
+	position: -webkit-sticky;
+	top: 100vh;
+	height: 50px;
+}
+.add-task__button {
+	cursor: pointer;
+	border: none;
+	position: absolute;
+	right: 0;
+	width: 50px;
+	height: 50px;
+	background-image: url("../src/assets/images/add-task.svg");
+	background-repeat: no-repeat;
+}

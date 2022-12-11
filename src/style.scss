@@ -13,7 +13,7 @@ $disabled_checkbox_color: #9CA59D;
 .content {
 	position: relative;
 	height: 100vh;
-	margin: 1% calc(50vw - 325px);
+	margin: auto;
 	padding: 40px;
 	background-color: $basic_background_color;
 	display: flex;
@@ -36,55 +36,38 @@ h1 {
 }
 .check__input {
 	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
 	position: absolute;
-	&:checked {
-		+ {
-			.check__box {
+	&:checked + .check__box {
 				background-color: $basic_color;
 				background-image: url("../src/assets/images/check.svg");
 				background-repeat: no-repeat;
 				background-position: center;
 			}
-		}
-		&:disabled {
-			+ {
-				.check__box {
+		&:disabled + .check__box {
 					background-color: $disabled_checkbox_color;
 					background-image: url("../src/assets/images/check.svg");
 					background-repeat: no-repeat;
 					background-position: center;
 				}
-			}
-		}
-	}
-	&:focus {
-		+ {
-			.check__box {
+	&:focus + .check__box {
 				box-shadow: 0 0 0 2px #5C9DFE, 0 0 0 4px #015ADF;
 			}
-		}
-	}
-	&:disabled {
-		+ {
-			.check__box {
+	&:disabled + .check__box {
 				box-shadow: 0 0 0 2px #9CA59D;
 			}
-		}
-	}
 }
 .check__box {
 	position: absolute;
 	width: 24px;
 	height: 24px;
 	box-shadow: 0 0 0 2px #5C9DFE;
-	margin-left: -30px;
+    left: 0;
 	border-radius: 6px;
 	background-color: $basic_background_color;
 }
 .check {
 	padding-left: 30px;
+    position: relative;
 }
 .add-task {
 	position: sticky;

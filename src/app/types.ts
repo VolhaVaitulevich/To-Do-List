@@ -1,5 +1,6 @@
 //interface for list of tasks
-   export interface ITask {
-	task: string;
-	completed: boolean;
-   }
+export interface ITask {
+  id: number;
+  task: string;
+  completed: boolean;
+}

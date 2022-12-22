@@ -1,8 +1,9 @@
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import  MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import * as path from 'path';
+import webpack from 'webpack';
 import { Configuration } from 'webpack';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,7 +41,7 @@ const config: Configuration & Record<string, any> = {
             options: {},
           },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               url: false,
             },
@@ -82,6 +83,10 @@ const config: Configuration & Record<string, any> = {
     }),
     new MiniCssExtractPlugin({
       filename: 'style-[hash].css',
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
     }),
   ],
 };

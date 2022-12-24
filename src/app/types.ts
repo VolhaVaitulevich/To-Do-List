@@ -4,3 +4,6 @@ export interface ITask {
   task: string;
   completed: boolean;
 }
+
+//type for EvenTarget sent to app.completeTask
+export type ETarget = EventTarget | null;

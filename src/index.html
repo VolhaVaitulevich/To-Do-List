@@ -8,8 +8,20 @@
     <section class="content" id="content">
       <h1>my tasks</h1>
       <div class="tasks" id="tasks"></div>
+      <section class="modal hidden">
+        <div class="flex">
+          <button class="button__close">⨉</button>
+        </div>
+        <div>
+          <p>Please add your task below</p>
+        </div>
+
+        <input type="text" id="new_task" placeholder="Add your task" />
+        <button class="button__submit">Submit</button>
+      </section>
+      <div class="overlay hidden"></div>
       <div class="add-task" id="add-task">
-        <button class="add-task__button"></button>
+        <button class="button__add-task"></button>
       </div>
     </section>
   </body>

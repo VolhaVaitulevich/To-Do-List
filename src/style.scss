@@ -4,7 +4,8 @@ $text_color: #111111;
 $font-family_1: Roboto;
 $basic_background_color: #e8eeff;
 $disabled_checkbox_color: #9ca59d;
-$checkbox_border_color: #015adf;
+$border_color: #015adf;
+$modal_text_color: #777;
 
 * {
   box-sizing: border-box;
@@ -52,13 +53,14 @@ h1 {
     background-position: center;
   }
   &:focus + .check__box {
-    box-shadow: 0 0 0 2px $basic_color, 0 0 0 4px $checkbox_border_color;
+    box-shadow: 0 0 0 2px $basic_color, 0 0 0 4px $border_color;
   }
   &:disabled + .check__box {
     box-shadow: 0 0 0 2px $disabled_checkbox_color;
   }
 }
 .check__box {
+  cursor: pointer;
   position: absolute;
   width: 24px;
   height: 24px;
@@ -82,7 +84,8 @@ h1 {
   top: 100vh;
   height: 50px;
 }
-.add-task__button {
+
+.button__add-task {
   cursor: pointer;
   border: none;
   position: absolute;
@@ -91,4 +94,79 @@ h1 {
   height: 50px;
   background-image: url('assets/images/add-task.svg');
   background-repeat: no-repeat;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  width: 450px;
+  padding: 30px;
+  min-height: 250px;
+  position: absolute;
+  top: 20%;
+  background-color: $basic_background_color;
+  border: 1px solid $border_color;
+  border-radius: 20px;
+  z-index: 2;
+}
+
+.modal .flex {
+  /* 
+  display: flex; */
+  position: relative;
+  left: 350px;
+  /* align-items:;
+  justify-content: space-between; */
+}
+
+.modal input {
+  padding: 15px 25px;
+  border: 1px solid $basic_color;
+  border-radius: 10px;
+}
+
+.modal p {
+  color: $modal_text_color;
+}
+
+button {
+  cursor: pointer;
+  border: solid 1px $basic_color;
+}
+
+.button__submit {
+  cursor: pointer;
+  display: inline-block;
+  padding: 15px 25px;
+  background-color: $basic_color;
+  color: $basic_background_color;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.button__close {
+  padding: 10px 15px;
+  color: $basic_background_color;
+  background: $basic_color;
+  border-radius: 50%;
+  border: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 1;
+}
+
+.hidden {
+  display: none;
 }

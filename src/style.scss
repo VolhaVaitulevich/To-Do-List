@@ -6,6 +6,7 @@ $basic_background_color: #e8eeff;
 $disabled_checkbox_color: #9ca59d;
 $border_color: #015adf;
 $modal_text_color: #777;
+$error_color: #ff0000ba;
 
 * {
   box-sizing: border-box;
@@ -169,4 +170,9 @@ button {
 
 .hidden {
   display: none;
+}
+
+.input__error {
+  margin: 0;
+  font-size: 16px;
 }

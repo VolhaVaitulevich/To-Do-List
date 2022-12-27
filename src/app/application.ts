@@ -55,8 +55,7 @@ export class Application {
     const modal = document.querySelector('.modal');
     const overlay = document.querySelector('.overlay');
     const closeModalBtn = document.querySelector('.button__close');
-    const submitBtn = document.querySelector('button__submit');
-    const inputTask = (<HTMLInputElement>document.querySelector('new_task')).value;
+    const submitBtn = document.querySelector('.button__submit');
     //show modal
     modal?.classList.remove('hidden');
     overlay?.classList.remove('hidden');
@@ -66,24 +65,47 @@ export class Application {
       modal?.classList.add('hidden');
       overlay?.classList.add('hidden');
     });
+
+    submitBtn?.addEventListener('click', () => {
+      const inputTask = (<HTMLInputElement>document.getElementById('new_task')).value ?? '';
+      if (inputTask.trim() !== '') {
+        console.log(inputTask);
+        const newTask: ITask = {
+          id: this.existingTasks.length,
+          task: inputTask,
+          completed: false,
+        };
+        this.existingTasks.unshift(newTask);
+        this.renderTasks(this.existingTasks);
+        (<HTMLInputElement>document.getElementById('new_task')).value = '';
+        modal?.classList.add('hidden');
+        overlay?.classList.add('hidden');
+      } else {
+        const errorMessage = <HTMLElement>document.querySelector('.input__error');
+        errorMessage.innerHTML = 'Please enter your task';
+        errorMessage.style.display = 'block';
+      }
+    });
   }
 
   completeTask(eTarget: ETarget): void {
     const target = eTarget as HTMLElement;
     const completedTaskId = Number(target.getAttribute('data_id'));
 
-    //Create arrays to distinguish and sort completed and uncompleted tasks
-    const completedTaskIndex = this.existingTasks.findIndex((item) => item.id === completedTaskId);
-    this.existingTasks[completedTaskIndex].completed = true;
-    this.existingTasks.sort(function (item1, item2) {
-      return item1.completed === item2.completed ? 0 : item1.completed ? 1 : -1;
-    });
-    console.log(this.existingTasks);
+    //find completed task index to update it
+    const completedTaskIndex = this.existingTasks.findIndex((item) => item.id === completedTaskId && item.completed === false);
+    if (completedTaskIndex !== -1) {
+      this.existingTasks[completedTaskIndex].completed = true;
+      this.existingTasks.sort(function (item1, item2) {
+        return item1.completed === item2.completed ? 0 : item1.completed ? 1 : -1;
+      });
+      console.log(this.existingTasks);
 
-    //add tasks to local storage
-    this.storage.setTasks(this.existingTasks);
+      //add tasks to local storage
+      this.storage.setTasks(this.existingTasks);
 
-    //render tasks on the page
-    this.renderTasks(this.existingTasks);
+      //render tasks on the page
+      this.renderTasks(this.existingTasks);
+    }
   }
 }

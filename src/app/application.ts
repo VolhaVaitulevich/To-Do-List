@@ -3,9 +3,8 @@ import { ETarget, ITask } from './types';
 
 export class Application {
   private existingTasks: Array<ITask>;
-  private storage: MyStorage;
 
-  constructor(storage: MyStorage) {
+  constructor(private storage: MyStorage) {
     this.storage = storage;
     this.existingTasks = storage.getTasks();
     this.renderTasks(this.existingTasks);
@@ -17,7 +16,7 @@ export class Application {
 
   renderTasks(tasks: Array<ITask>): void {
     //remove all tasks from the page and from local storage
-    localStorage.removeItem('tasks');
+    this.storage.removeTasks();
     const listOfTasksHTML = document.getElementById('tasks');
     while (listOfTasksHTML?.firstChild) {
       listOfTasksHTML.removeChild(listOfTasksHTML.firstChild);
@@ -56,7 +55,8 @@ export class Application {
     const modal = document.querySelector('.modal');
     const overlay = document.querySelector('.overlay');
     const closeModalBtn = document.querySelector('.button__close');
-
+    const submitBtn = document.querySelector('button__submit');
+    const inputTask = (<HTMLInputElement>document.querySelector('new_task')).value;
     //show modal
     modal?.classList.remove('hidden');
     overlay?.classList.remove('hidden');
@@ -73,10 +73,12 @@ export class Application {
     const completedTaskId = Number(target.getAttribute('data_id'));
 
     //Create arrays to distinguish and sort completed and uncompleted tasks
-    const uncompletedTasks: Array<ITask> = this.existingTasks.filter((item) => item.id !== completedTaskId);
-    const completedTasks: Array<ITask> = this.existingTasks.filter((item) => item.id === completedTaskId);
-    completedTasks.forEach((item) => (item.completed = true));
-    this.existingTasks = uncompletedTasks.concat(completedTasks);
+    const completedTaskIndex = this.existingTasks.findIndex((item) => item.id === completedTaskId);
+    this.existingTasks[completedTaskIndex].completed = true;
+    this.existingTasks.sort(function (item1, item2) {
+      return item1.completed === item2.completed ? 0 : item1.completed ? 1 : -1;
+    });
+    console.log(this.existingTasks);
 
     //add tasks to local storage
     this.storage.setTasks(this.existingTasks);

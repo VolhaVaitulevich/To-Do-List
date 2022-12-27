@@ -15,4 +15,8 @@ export class MyStorage {
     //add tasks to localStorage
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
+
+  removeTasks(): void {
+    localStorage.removeItem('tasks');
+  }
 }

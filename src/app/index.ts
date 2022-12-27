@@ -23,7 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
     app.showModal();
   });
 
-  document.querySelector('.tasks')?.addEventListener('click', function (e) {
-    app.completeTask(e.target);
-  });
+  document.querySelectorAll('.check__input:not(:disabled)')?.forEach(() =>
+    addEventListener('click', function (e) {
+      app.completeTask(e.target);
+    })
+  );
 });

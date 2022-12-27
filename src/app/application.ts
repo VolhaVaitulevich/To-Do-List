@@ -40,6 +40,7 @@ export class Application {
       spanCheckbox.className = 'check__box';
       spanCheckbox.setAttribute('data_id', String(item.id));
       label.innerHTML = item.task;
+
       if (item.completed === true) {
         inputCheckbox.setAttribute('disabled', '');
         label.className = 'check check_done';
@@ -61,7 +62,7 @@ export class Application {
     overlay?.classList.remove('hidden');
 
     //close modal
-    closeModalBtn?.addEventListener('click', function () {
+    closeModalBtn?.addEventListener('click', () => {
       modal?.classList.add('hidden');
       overlay?.classList.add('hidden');
     });
@@ -69,15 +70,7 @@ export class Application {
     submitBtn?.addEventListener('click', () => {
       const inputTask = (<HTMLInputElement>document.getElementById('new_task')).value ?? '';
       if (inputTask.trim() !== '') {
-        console.log(inputTask);
-        const newTask: ITask = {
-          id: this.existingTasks.length,
-          task: inputTask,
-          completed: false,
-        };
-        this.existingTasks.unshift(newTask);
-        this.renderTasks(this.existingTasks);
-        (<HTMLInputElement>document.getElementById('new_task')).value = '';
+        this.addTask(inputTask);
         modal?.classList.add('hidden');
         overlay?.classList.add('hidden');
       } else {
@@ -88,18 +81,28 @@ export class Application {
     });
   }
 
+  addTask(inputTask: string): void {
+    const newTask: ITask = {
+      id: this.existingTasks.length + 1,
+      task: inputTask,
+      completed: false,
+    };
+    this.existingTasks.unshift(newTask);
+    this.renderTasks(this.existingTasks);
+    (<HTMLInputElement>document.getElementById('new_task')).value = '';
+  }
+
   completeTask(eTarget: ETarget): void {
     const target = eTarget as HTMLElement;
     const completedTaskId = Number(target.getAttribute('data_id'));
 
     //find completed task index to update it
-    const completedTaskIndex = this.existingTasks.findIndex((item) => item.id === completedTaskId && item.completed === false);
+    const completedTaskIndex = this.existingTasks.findIndex((item) => item.id === completedTaskId);
     if (completedTaskIndex !== -1) {
       this.existingTasks[completedTaskIndex].completed = true;
-      this.existingTasks.sort(function (item1, item2) {
+      this.existingTasks.sort((item1, item2) => {
         return item1.completed === item2.completed ? 0 : item1.completed ? 1 : -1;
       });
-      console.log(this.existingTasks);
 
       //add tasks to local storage
       this.storage.setTasks(this.existingTasks);

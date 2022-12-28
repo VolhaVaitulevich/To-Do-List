@@ -1,23 +1,31 @@
 // Your code
-import { ITask } from "./types";
+import { Application } from './application';
+import { MyStorage } from './storage';
 
+document.addEventListener('DOMContentLoaded', function () {
+  //to add test tasks
+  function addTestTasks(): void {
+    if (localStorage.length === 0) {
+      for (let i = 1; i < 5; i++) {
+        localStorage.setItem(
+          'tasks',
+          JSON.stringify([...JSON.parse(localStorage.getItem('tasks') ?? '[]'), { id: i, task: `testTask ${i}`, completed: false }])
+        );
+      }
+    }
+  }
+  addTestTasks();
 
-document.addEventListener("DOMContentLoaded", function () {
-    const newTask = {
-       task:Date(),
-       completed: false,
-   };
+  const storage = new MyStorage();
+  const app = new Application(storage);
 
-   localStorage.setItem("tasks", JSON.stringify([...JSON.parse(localStorage.getItem("tasks") ?? "[]"), 
-   { task: newTask.task, completed: false }]));
+  document.querySelector('.button__add-task')?.addEventListener('click', function () {
+    app.showModal();
+  });
 
-   const existingTasks: Array<ITask> = Array.from(JSON.parse(localStorage.getItem("tasks") ?? ''));
-   existingTasks.forEach((item) => {
-
-    const listOfTasks = document.querySelector(".tasks");
-    const input = document.createElement("label");
-    input.className = "check";
-    input.innerHTML  = `<input class="check__input" type="checkbox"> <span class="check__box"></span>${item.task}`;
-    listOfTasks?.appendChild(input);
-   })
+  document.querySelectorAll('.check__input:not(:disabled)')?.forEach(() =>
+    addEventListener('click', function (e) {
+      app.completeTask(e.target);
+    })
+  );
 });

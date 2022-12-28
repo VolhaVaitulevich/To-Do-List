@@ -1,89 +1,179 @@
 // Your styles
-$basic_color: #5C9DFE;
+$basic_color: #5c9dfe;
 $text_color: #111111;
 $font-family_1: Roboto;
-$basic_background_color: #E8EEFF;
-$disabled_checkbox_color: #9CA59D;
-$checkbox_border_color: #015ADF;
+$basic_background_color: #e8eeff;
+$disabled_checkbox_color: #9ca59d;
+$border_color: #015adf;
+$modal_text_color: #777;
+$error_color: #ff0000ba;
 
 * {
-	box-sizing: border-box;
-	font-family: $font-family_1;
-	font-size: 24px;
+  box-sizing: border-box;
+  font-family: $font-family_1;
+  font-size: 24px;
 }
 .content {
-	position: relative;
-	width: 650px;
-    min-height: 100vh;
-	margin: 0 auto;
-	padding: 40px;
-	background-color: $basic_background_color;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	border-radius: 20px;
+  position: relative;
+  width: 650px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: $basic_background_color;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 20px;
 }
 h1 {
-	font-size: 36px;
-	margin-top: 0;
-	color: $basic_color;
-	font-weight: bold;
+  font-size: 36px;
+  margin-top: 0;
+  color: $basic_color;
+  font-weight: bold;
 }
 .tasks {
-	display: flex;
-	flex-direction: column;
-	gap: 30px;
-	color: $text_color;
-	font-weight: lighter;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  color: $text_color;
+  font-weight: lighter;
 }
 .check__input {
-	appearance: none;
-	position: absolute;
-	&:checked + .check__box {
-				background-color: $basic_color;
-				background-image: url("assets/images/check.svg");
-				background-repeat: no-repeat;
-				background-position: center;
-			}
-		&:disabled + .check__box {
-					background-color: $disabled_checkbox_color;
-					background-image: url("assets/images/check.svg");
-					background-repeat: no-repeat;
-					background-position: center;
-				}
-	&:focus + .check__box {
-				box-shadow: 0 0 0 2px $basic_color, 0 0 0 4px $checkbox_border_color;
-			}
-	&:disabled + .check__box {
-				box-shadow: 0 0 0 2px $disabled_checkbox_color;
-			}
+  appearance: none;
+  position: absolute;
+  &:checked + .check__box {
+    background-color: $basic_color;
+    background-image: url('assets/images/check.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  &:disabled + .check__box {
+    background-color: $disabled_checkbox_color;
+    background-image: url('assets/images/check.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  &:focus + .check__box {
+    box-shadow: 0 0 0 2px $basic_color, 0 0 0 4px $border_color;
+  }
+  &:disabled + .check__box {
+    box-shadow: 0 0 0 2px $disabled_checkbox_color;
+  }
 }
 .check__box {
-	position: absolute;
-	width: 24px;
-	height: 24px;
-	box-shadow: 0 0 0 2px $basic_color;
-    left: 0;
-	border-radius: 6px;
-	background-color: $basic_background_color;
+  cursor: pointer;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  box-shadow: 0 0 0 2px $basic_color;
+  left: 0;
+  border-radius: 6px;
+  background-color: $basic_background_color;
 }
 .check {
-	padding-left: 30px;
-    position: relative;
+  padding-left: 30px;
+  position: relative;
+  overflow-wrap: break-word;
 }
+
+.check_done {
+  text-decoration: line-through;
+}
+
 .add-task {
-	position: sticky;
-	position: -webkit-sticky;
-	top: 100vh;
-	height: 50px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 100vh;
+  height: 50px;
 }
-.add-task__button {
-	cursor: pointer;
-	border: none;
-	position: absolute;
-	right: 0;
-	width: 50px;
-	height: 50px;
-	background-image: url("assets/images/add-task.svg");
-	background-repeat: no-repeat;
+
+.button__add-task {
+  cursor: pointer;
+  border: none;
+  position: absolute;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background-image: url('assets/images/add-task.svg');
+  background-repeat: no-repeat;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  width: 450px;
+  padding: 30px;
+  min-height: 250px;
+  position: absolute;
+  top: 20%;
+  background-color: $basic_background_color;
+  border: 1px solid $border_color;
+  border-radius: 20px;
+  z-index: 2;
+}
+
+.modal .flex {
+  /* 
+  display: flex; */
+  position: relative;
+  left: 350px;
+  /* align-items:;
+  justify-content: space-between; */
+}
+
+.modal input {
+  padding: 15px 25px;
+  border: 1px solid $basic_color;
+  border-radius: 10px;
+}
+
+.modal p {
+  color: $modal_text_color;
+}
+
+button {
+  cursor: pointer;
+  border: solid 1px $basic_color;
+}
+
+.button__submit {
+  cursor: pointer;
+  display: inline-block;
+  padding: 15px 25px;
+  background-color: $basic_color;
+  color: $basic_background_color;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.button__close {
+  padding: 10px 15px;
+  color: $basic_background_color;
+  background: $basic_color;
+  border-radius: 50%;
+  border: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.input__error {
+  margin: 0;
+  font-size: 16px;
 }

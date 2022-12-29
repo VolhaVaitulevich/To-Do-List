@@ -184,4 +184,8 @@ button {
   cursor: pointer;
   position: absolute;
   right: 0;
+  border: none;
+  background-image: url('assets/images/delete.svg');
+  background-size: cover;
+  background-color: transparent;
 }

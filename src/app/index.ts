@@ -22,16 +22,4 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('.button__add-task')?.addEventListener('click', function () {
     app.showModal();
   });
-
-  document.querySelectorAll('.check__input:not(:disabled)')?.forEach(() =>
-    addEventListener('click', function (e) {
-      app.completeTask(e.target);
-    })
-  );
-
-  document.querySelectorAll('.button__delete')?.forEach((item) =>
-    item.addEventListener('click', function (e) {
-      app.deleteTask(e.target);
-    })
-  );
 });

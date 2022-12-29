@@ -30,7 +30,6 @@ export class Application {
       const listOfTasks = document.querySelector('.tasks');
       const label = document.createElement('label');
       label.className = 'check';
-      label.setAttribute('task_id', String(item.id));
 
       const inputCheckbox = document.createElement('input');
       inputCheckbox.className = 'check__input';
@@ -38,18 +37,22 @@ export class Application {
 
       const spanCheckbox = document.createElement('span');
       spanCheckbox.className = 'check__box';
-      spanCheckbox.setAttribute('data_id', String(item.id));
       label.innerHTML = item.task;
 
-      const deleteButton = document.createElement('input');
+      const deleteButton = document.createElement('button');
       deleteButton.className = 'button__delete';
-      deleteButton.setAttribute('type', 'image');
-      deleteButton.setAttribute('src', '/assets/images/delete.svg');
-      deleteButton.setAttribute('data_id', String(item.id));
+
+      deleteButton.addEventListener('click', () => {
+        if (confirm(`Are you sure you want to delete this task? \n${item.task}`)) {
+          this.deleteTask(item);
+        }
+      });
 
       if (item.completed === true) {
         inputCheckbox.setAttribute('disabled', '');
         label.className = 'check check_done';
+      } else {
+        inputCheckbox.addEventListener('click', () => this.completeTask(item));
       }
 
       label.appendChild(inputCheckbox);
@@ -64,7 +67,10 @@ export class Application {
     const overlay = document.querySelector('.overlay');
     const closeModalBtn = document.querySelector('.button__close');
     const submitBtn = document.querySelector('.button__submit');
+    const errorMessage = <HTMLElement>document.querySelector('.input__error');
+
     //show modal
+    errorMessage.style.display = 'none';
     modal?.classList.remove('hidden');
     overlay?.classList.remove('hidden');
 
@@ -81,7 +87,6 @@ export class Application {
         modal?.classList.add('hidden');
         overlay?.classList.add('hidden');
       } else {
-        const errorMessage = <HTMLElement>document.querySelector('.input__error');
         errorMessage.innerHTML = 'Please enter your task';
         errorMessage.style.display = 'block';
       }
@@ -99,12 +104,9 @@ export class Application {
     (<HTMLInputElement>document.getElementById('new_task')).value = '';
   }
 
-  completeTask(eTarget: ETarget): void {
-    const target = eTarget as HTMLElement;
-    const completedTaskId = Number(target.getAttribute('data_id'));
-
+  completeTask(task: ITask): void {
     //find completed task index to update it
-    const completedTaskIndex = this.existingTasks.findIndex((item) => item.id === completedTaskId);
+    const completedTaskIndex = this.existingTasks.findIndex((item) => item.id === task.id);
     if (completedTaskIndex !== -1) {
       this.existingTasks[completedTaskIndex].completed = true;
       this.existingTasks.sort((item1, item2) => {
@@ -119,12 +121,8 @@ export class Application {
     }
   }
 
-  deleteTask(eTarget: ETarget): void {
-    console.log('ssss');
-    const target = eTarget as HTMLElement;
-    const deletedTaskId = Number(target.getAttribute('data_id'));
-
-    const deletedTaskIndex = this.existingTasks.findIndex((item) => item.id === deletedTaskId);
+  deleteTask(task: ITask): void {
+    const deletedTaskIndex = this.existingTasks.findIndex((item) => item.id === task.id);
     if (deletedTaskIndex !== -1) {
       this.existingTasks.splice(deletedTaskIndex, 1);
     }

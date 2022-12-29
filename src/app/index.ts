@@ -28,4 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
       app.completeTask(e.target);
     })
   );
+
+  document.querySelectorAll('.button__delete')?.forEach((item) =>
+    item.addEventListener('click', function (e) {
+      app.deleteTask(e.target);
+    })
+  );
 });

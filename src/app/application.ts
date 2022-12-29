@@ -41,6 +41,12 @@ export class Application {
       spanCheckbox.setAttribute('data_id', String(item.id));
       label.innerHTML = item.task;
 
+      const deleteButton = document.createElement('input');
+      deleteButton.className = 'button__delete';
+      deleteButton.setAttribute('type', 'image');
+      deleteButton.setAttribute('src', '/assets/images/delete.svg');
+      deleteButton.setAttribute('data_id', String(item.id));
+
       if (item.completed === true) {
         inputCheckbox.setAttribute('disabled', '');
         label.className = 'check check_done';
@@ -48,6 +54,7 @@ export class Application {
 
       label.appendChild(inputCheckbox);
       label.appendChild(spanCheckbox);
+      label.appendChild(deleteButton);
       listOfTasks?.appendChild(label);
     });
   }
@@ -110,5 +117,19 @@ export class Application {
       //render tasks on the page
       this.renderTasks(this.existingTasks);
     }
+  }
+
+  deleteTask(eTarget: ETarget): void {
+    console.log('ssss');
+    const target = eTarget as HTMLElement;
+    const deletedTaskId = Number(target.getAttribute('data_id'));
+
+    const deletedTaskIndex = this.existingTasks.findIndex((item) => item.id === deletedTaskId);
+    if (deletedTaskIndex !== -1) {
+      this.existingTasks.splice(deletedTaskIndex, 1);
+    }
+
+    this.storage.setTasks(this.existingTasks);
+    this.renderTasks(this.existingTasks);
   }
 }

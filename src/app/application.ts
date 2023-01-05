@@ -1,5 +1,7 @@
+import { cloneDeep } from '../utils/cloneDeep';
+import { isEqual } from '../utils/isEqual';
 import { MyStorage } from './storage';
-import { ETarget, ITask } from './types';
+import { ITask } from './types';
 
 export class Application {
   private existingTasks: Array<ITask>;
@@ -7,9 +9,9 @@ export class Application {
   constructor(private storage: MyStorage) {
     this.storage = storage;
     this.existingTasks = storage.getTasks();
-    this.renderTasks(this.existingTasks);
+    this.updateTasksList(this.existingTasks);
 
-    this.renderTasks = this.renderTasks.bind(this);
+    this.updateTasksList = this.updateTasksList.bind(this);
     this.completeTask = this.completeTask.bind(this);
     this.showModal = this.showModal.bind(this);
   }
@@ -49,8 +51,13 @@ export class Application {
     listOfTasks?.appendChild(label);
   }
 
-  renderTasks(tasks: Array<ITask>): void {
-    this.existingTasks = JSON.parse(JSON.stringify(tasks));
+  updateTasksList(tasks: Array<ITask>): void {
+    /* 
+    if (isEqual(this.existingTasks, tasks)) {
+      return;
+    } */
+    this.existingTasks = cloneDeep(tasks);
+
     //remove all tasks from the page and from local storage
     this.storage.removeTasks();
     const listOfTasksHTML = document.getElementById('tasks');
@@ -102,43 +109,30 @@ export class Application {
   }
 
   addTask(inputTask: string): void {
-    const newTask: ITask = {
-      id: this.existingTasks.length + 1,
-      task: inputTask,
-      completed: false,
-    };
-    const newTasksList: Array<ITask> = JSON.parse(JSON.stringify(this.existingTasks));
-    newTasksList.unshift(newTask);
-    this.renderTasks(newTasksList);
+    this.updateTasksList([{ id: this.existingTasks.length + 1, task: inputTask, completed: false }, ...this.existingTasks]);
     (<HTMLInputElement>document.getElementById('new_task')).value = '';
   }
 
   completeTask(task: ITask): void {
     //find completed task index to update it
-    const completedTaskIndex = this.existingTasks.findIndex((item) => item.id === task.id);
-    if (completedTaskIndex !== -1) {
-      const newTasksList: Array<ITask> = JSON.parse(JSON.stringify(this.existingTasks));
-      newTasksList[completedTaskIndex].completed = true;
-      newTasksList.sort((item1, item2) => {
-        return item1.completed === item2.completed ? 0 : item1.completed ? 1 : -1;
-      });
+    const newTasksList: Array<ITask> = this.existingTasks.map((item) => {
+      if (item.id === task.id) {
+        item.completed = true;
+      }
+      return item;
+    });
+    newTasksList.sort((item1, item2) => (item1.completed === item2.completed ? 0 : item1.completed ? 1 : -1));
 
-      //add tasks to local storage
-      this.storage.setTasks(newTasksList);
+    //add tasks to local storage
+    this.storage.setTasks(newTasksList);
 
-      //render tasks on the page
-      this.renderTasks(newTasksList);
-    }
+    //render tasks on the page
+    this.updateTasksList(newTasksList);
   }
 
   deleteTask(task: ITask): void {
-    const deletedTaskIndex = this.existingTasks.findIndex((item) => item.id === task.id);
-    if (deletedTaskIndex !== -1) {
-      const newTasksList: Array<ITask> = JSON.parse(JSON.stringify(this.existingTasks));
-      newTasksList.splice(deletedTaskIndex, 1);
-
-      this.storage.setTasks(newTasksList);
-      this.renderTasks(newTasksList);
-    }
+    const newTasksList: Array<ITask> = this.existingTasks.filter((item) => item.id !== task.id);
+    this.storage.setTasks(newTasksList);
+    this.updateTasksList(newTasksList);
   }
 }

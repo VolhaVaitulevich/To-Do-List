@@ -8,8 +8,8 @@ export class Application {
 
   constructor(private storage: MyStorage) {
     this.storage = storage;
-    this.existingTasks = storage.getTasks();
-    this.updateTasksList(this.existingTasks);
+    this.existingTasks = [];
+    this.updateTasksList(storage.getTasks());
 
     this.updateTasksList = this.updateTasksList.bind(this);
     this.completeTask = this.completeTask.bind(this);
@@ -52,10 +52,9 @@ export class Application {
   }
 
   updateTasksList(tasks: Array<ITask>): void {
-    /* 
     if (isEqual(this.existingTasks, tasks)) {
       return;
-    } */
+    }
     this.existingTasks = cloneDeep(tasks);
 
     //remove all tasks from the page and from local storage
@@ -122,17 +121,12 @@ export class Application {
       return item;
     });
     newTasksList.sort((item1, item2) => (item1.completed === item2.completed ? 0 : item1.completed ? 1 : -1));
-
-    //add tasks to local storage
-    this.storage.setTasks(newTasksList);
-
     //render tasks on the page
     this.updateTasksList(newTasksList);
   }
 
   deleteTask(task: ITask): void {
     const newTasksList: Array<ITask> = this.existingTasks.filter((item) => item.id !== task.id);
-    this.storage.setTasks(newTasksList);
     this.updateTasksList(newTasksList);
   }
 }

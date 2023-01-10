@@ -4,11 +4,10 @@ import { MyStorage } from './storage';
 import { ITask } from './types';
 
 export class Application {
-  private existingTasks: Array<ITask>;
+  private existingTasks: Array<ITask> = [];
 
   constructor(private storage: MyStorage) {
     this.storage = storage;
-    this.existingTasks = [];
     this.updateTasksList(storage.getTasks());
 
     this.updateTasksList = this.updateTasksList.bind(this);

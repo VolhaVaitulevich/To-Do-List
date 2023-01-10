@@ -14,13 +14,6 @@ export function isEqual(obj1: any, obj2: any): boolean {
     return false;
   }
 
-  for (const key of Object.keys(obj1)) {
-    if (!Object.prototype.hasOwnProperty.call(obj2, key)) {
-      return false;
-    }
-    if (!isEqual(obj1[key], obj2[key])) {
-      return false;
-    }
-  }
-  return true;
+  const keys = Object.keys(obj1);
+  return keys.every((key) => Object.prototype.hasOwnProperty.call(obj2, key) && isEqual(obj1[key], obj2[key]));
 }

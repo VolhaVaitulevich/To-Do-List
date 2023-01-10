@@ -177,3 +177,15 @@ button {
   margin: 0;
   font-size: 16px;
 }
+
+.button__delete {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  border: none;
+  background-image: url('assets/images/delete.svg');
+  background-size: cover;
+  background-color: transparent;
+}
